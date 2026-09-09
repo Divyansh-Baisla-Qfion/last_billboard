@@ -1,0 +1,7 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="settings-btn">
+<rect x="0.5" y="0.5" width="31" height="31" rx="7.5" fill="#16181C"/>
+<rect x="0.5" y="0.5" width="31" height="31" rx="7.5" stroke="#2A2F36"/>
+<path id="settings-icon" d="M16 13C17.657 13 19 14.343 19 16C19 17.657 17.657 19 16 19C14.343 19 13 17.657 13 16C13 14.343 14.343 13 16 13ZM16 8L17.5 10L20 9L20.5 12L24 12.5L22 15L24 17.5L21 18V21L18 20L16 24L14 20L11 21V18L8 17.5L10 15L8 12.5L11.5 12L12 9L14.5 10L16 8Z" stroke="#9CA3AF" stroke-width="1.2"/>
+</g>
+</svg>

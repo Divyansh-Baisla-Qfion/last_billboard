@@ -1,0 +1,34 @@
+<main class="dashboard" [class.light]="theme() === 'light'">
+  <app-header [user]="data.user()" [theme]="theme()" (themeChanged)="setTheme($event)" (settingsOpened)="settings.showModal()" />
+
+  <section class="kpi-row" aria-label="Campaign overview">
+    <div class="kpi"><h2>TOTAL CAMPAIGNS</h2><p>{{ data.totals().campaigns }}</p></div>
+    <div class="kpi"><h2>TOTAL AD SETS</h2><p>{{ data.totals().adSets }}</p></div>
+    <div class="kpi"><h2>TOTAL ADS</h2><p>{{ data.totals().ads }}</p></div>
+    <div class="kpi"><h2>TOTAL SPEND</h2><p>{{ data.totals().spend | currency:'USD':'symbol':'1.0-0' }}</p></div>
+  </section>
+
+  <section class="filter-bar" aria-label="Campaign filters">
+    <input class="search" type="search" aria-label="Filter by name" placeholder="Filter by name..." [ngModel]="query()" (ngModelChange)="query.set($event)">
+    <label class="select-control"><span>Status:</span><select aria-label="Status" [ngModel]="status()" (ngModelChange)="status.set($event)"><option>All</option><option>Active</option><option>Paused</option><option>Draft</option></select><span aria-hidden="true">▾</span></label>
+    <label class="select-control"><span>Sort:</span><select aria-label="Sort campaigns" [ngModel]="sort()" (ngModelChange)="sort.set($event)"><option value="updated">Last updated</option><option value="viewed">Recently viewed</option><option value="name">Name</option><option value="impressions">Impressions</option></select><span aria-hidden="true">▾</span></label>
+    <div class="tabs" role="group" aria-label="Campaign collection"><button [class.active]="tab() === 'recent'" [attr.aria-pressed]="tab() === 'recent'" (click)="tab.set('recent')">Recently viewed</button><button [class.active]="tab() === 'all'" [attr.aria-pressed]="tab() === 'all'" (click)="tab.set('all')">All campaigns</button></div>
+    <div class="view-actions"><div class="view-toggle" role="group" aria-label="Campaign view"><button class="icon-button" [class.active]="view() === 'grid'" aria-label="Grid view" [attr.aria-pressed]="view() === 'grid'" (click)="setView('grid')"><img src="assets/grid.svg" width="32" height="32" alt=""></button><button class="icon-button" [class.active]="view() === 'list'" aria-label="List view" [attr.aria-pressed]="view() === 'list'" (click)="setView('list')"><img src="assets/list.svg" width="32" height="32" alt=""></button></div><button class="primary new-campaign" (click)="create.showModal()">+ New Campaign</button></div>
+  </section>
+
+
+  <section id="campaign-grid" class="campaign-grid" aria-label="Campaigns">
+    @for (campaign of visible(); track campaign.id) { <app-campaign-card [campaign]="campaign" (opened)="openCampaign($event, detail)" /> }
+    @empty { <div class="empty-state"><h2>No campaigns found</h2><p>Try a different name or status.</p><button class="primary" (click)="resetFilters()">Clear filters</button></div> }
+  </section>
+
+  @if (visible().length) { <app-campaign-table id="campaign-table" class="list-view" [campaigns]="visible()" (opened)="openCampaign($event, detail)" (filtersCleared)="resetFilters()" /> }
+  <dialog #create aria-labelledby="create-title" (click)="$event.target === create ? create.close() : undefined">
+    <form (ngSubmit)="createCampaign(create)"><div class="dialog-heading"><h2 id="create-title">New Campaign</h2><button type="button" class="close" aria-label="Close new campaign" (click)="create.close()">×</button></div><p>Create a draft and start your next billboard idea.</p><label class="field">Campaign name<input name="name" [(ngModel)]="draftName" required maxlength="100" placeholder="Give your campaign a name" autofocus></label><p class="hint">Demo mode: drafts are saved in this browser.</p><div class="dialog-actions"><button type="button" class="secondary" (click)="create.close()">Cancel</button><button type="submit" class="primary" [disabled]="!draftName.trim()">Create campaign</button></div></form>
+  </dialog>
+  <dialog #settings aria-labelledby="settings-title" (click)="$event.target === settings ? settings.close() : undefined"><div class="dialog-heading"><h2 id="settings-title">Settings</h2><button class="close" aria-label="Close settings" (click)="settings.close()">×</button></div><p>Choose how Last Billboard looks on this device.</p><label class="field">Appearance<select [ngModel]="theme()" (ngModelChange)="setTheme($event)"><option value="dark">Dark</option><option value="light">Light</option></select></label><p class="hint">Campaign data is a local demo. No account or advertising platform is connected.</p></dialog>
+  <dialog #detail aria-labelledby="detail-title" (click)="$event.target === detail ? detail.close() : undefined">
+    @if (selected(); as campaign) { <div class="dialog-heading"><h2 id="detail-title">{{ campaign.name }}</h2><button class="close" aria-label="Close campaign" (click)="detail.close()">×</button></div>@if (campaign.image) { <img class="detail-image" [src]="'assets/' + campaign.image" alt="Campaign billboard"> }<p>Campaign • &#64;{{ campaign.owner }} · {{ campaign.status }}</p><dl class="detail-metrics"><div><dt>Ad Sets</dt><dd>{{ campaign.adSets }}</dd></div><div><dt>Ads</dt><dd>{{ campaign.ads }}</dd></div><div><dt>Spend</dt><dd>{{ campaign.spend | currency:'USD':'symbol':'1.0-0' }}</dd></div><div><dt>Impressions</dt><dd>{{ campaign.impressions | number }}</dd></div><div><dt>Clicks</dt><dd>{{ campaign.clicks | number }}</dd></div><div><dt>Votes</dt><dd>{{ campaign.votes | number }}</dd></div></dl> }
+  </dialog>
+</main>
+

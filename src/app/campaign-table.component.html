@@ -1,0 +1,23 @@
+<section class="table-panel" aria-label="Campaign list">
+  <div class="table-scroll" tabindex="0" role="region" aria-label="Campaign metrics table, scroll horizontally to see all columns">
+    <table [class.empty]="campaigns().length === 0">
+      <colgroup><col class="campaign-col"><col class="creator-col"><col class="status-col"><col class="count-col"><col class="count-col"><col class="impressions-col"><col class="count-col"><col class="count-col"><col class="count-col"><col class="spend-col"><col class="updated-col"></colgroup>
+      <thead><tr><th scope="col">CAMPAIGN</th><th scope="col">CREATOR</th><th scope="col">STATUS</th><th scope="col">AD SETS</th><th scope="col">ADS</th><th scope="col">IMPRESSIONS</th><th scope="col">CLICKS</th><th scope="col">VOTES</th><th scope="col">CTR</th><th scope="col">SPEND</th><th scope="col">LAST UPDATED</th></tr></thead>
+      <tbody>
+        @for (campaign of campaigns(); track campaign.id) {
+          <tr>
+            <th scope="row"><button class="campaign-link" (click)="opened.emit(campaign)" [attr.aria-label]="'Open ' + campaign.name">{{ campaign.name | titlecase }}</button></th>
+            <td class="creator">&#64;{{ campaign.owner }}</td>
+            <td><span class="status-badge" [class.live]="campaign.status === 'Active'" [class.draft]="campaign.status === 'Draft'">{{ campaign.status === 'Active' ? 'LIVE' : campaign.status.toUpperCase() }}</span></td>
+            <td class="highlight">{{ campaign.adSets | number }}</td><td class="highlight">{{ campaign.ads | number }}</td>
+            <td class="highlight">{{ compact(campaign.impressions) }}</td><td>{{ compact(campaign.clicks) }}</td><td>{{ compact(campaign.votes) }}</td>
+            <td>{{ (campaign.impressions > 0 ? campaign.clicks / campaign.impressions : 0) | percent:'1.2-2' }}</td>
+            <td>{{ campaign.spend | currency:'USD':'symbol':'1.0-0' }}</td><td class="updated" [title]="updatedTitle(campaign.updatedAt)">{{ updated(campaign.updatedAt) }}</td>
+          </tr>
+        } @empty {
+          <tr><td colspan="11" class="empty-state"><h2>No campaigns found</h2><p>Try a different name or status.</p><button class="clear-filters" (click)="filtersCleared.emit()">Clear filters</button></td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

@@ -1,0 +1,12 @@
+  <header class="top-header">
+    <a class="brand" href="./" aria-label="Last Billboard home"><span class="logo">L</span><span>LAST BILLBOARD</span></a>
+    <div class="header-right">
+      <div class="theme-toggle" role="group" aria-label="Color theme">
+        <button class="theme-button" aria-label="Light theme" [attr.aria-pressed]="theme() === 'light'" (click)="themeChanged.emit('light')"><img src="assets/sun.svg" alt="" width="28" height="24"></button>
+        <button class="theme-button" aria-label="Dark theme" [attr.aria-pressed]="theme() === 'dark'" (click)="themeChanged.emit('dark')"><img src="assets/moon.svg" alt="" width="28" height="24"></button>
+      </div>
+      <button class="icon-button settings-button" aria-label="Settings" (click)="settingsOpened.emit()"><img src="assets/settings.svg" width="32" height="32" alt=""></button>
+      <span class="divider"></span>
+      <div class="user-info"><span class="avatar">{{ user().initials }}</span><span class="handle">&#64;{{ user().handle }}</span></div>
+    </div>
+  </header>

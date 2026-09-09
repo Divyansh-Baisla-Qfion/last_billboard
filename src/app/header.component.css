@@ -1,0 +1,16 @@
+:host { display: block; }
+.top-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 40px; }
+.brand { display: flex; align-items: center; gap: 12px; color: var(--text); font: 900 20px 'Unbounded', sans-serif; text-decoration: none; white-space: nowrap; transform: rotate(-.09deg); }
+.logo { display: grid; place-items: center; width: 40px; height: 40px; border: 3px solid #000; border-radius: 4px; background: var(--lime); color: #000; font-size: 22px; }
+.header-right { display: flex; align-items: center; gap: 16px; }
+.theme-toggle { display: flex; padding: 4px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); }
+.theme-button, .icon-button { display: grid; place-items: center; padding: 0; border: 0; background: transparent; }
+.theme-button { width: 28px; height: 24px; border-radius: 999px; }
+.theme-button img { width: 28px; height: 24px; }
+.icon-button, .icon-button img { width: 32px; height: 32px; }
+:host(.light) .theme-button:first-child { background: var(--lime); }
+:host(.light) .theme-button:last-child img { filter: grayscale(1); opacity: .6; }
+.divider { width: 1px; height: 24px; background: var(--border); }
+.user-info { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 500; }
+.avatar { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--pink); color: #fff; font-size: 11px; font-weight: 600; }
+@media (max-width: 600px) { .top-header { flex-wrap: wrap; gap: 16px; } .brand { font-size: 17px; gap: 8px; } .header-right { width: 100%; gap: 12px; } .user-info { margin-left: auto; } }
